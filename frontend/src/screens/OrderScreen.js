@@ -3,17 +3,20 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { detailsOrder, deliverOrder, payOrder } from '../actions/orderActions';
+import { deliverOrder, detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants';
+import {
+  ORDER_DELIVER_RESET,
+  ORDER_PAY_RESET,
+} from '../constants/orderConstants';
 
 export default function OrderScreen(props) {
   const orderId = props.match.params.id;
   const [sdkReady, setSdkReady] = useState(false);
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
-const userSignin = useSelector((state) => state.userSignin);
+  const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
 
   const orderPay = useSelector((state) => state.orderPay);
@@ -22,7 +25,7 @@ const userSignin = useSelector((state) => state.userSignin);
     error: errorPay,
     success: successPay,
   } = orderPay;
-   const orderDeliver = useSelector((state) => state.orderDeliver);
+  const orderDeliver = useSelector((state) => state.orderDeliver);
   const {
     loading: loadingDeliver,
     error: errorDeliver,
@@ -59,15 +62,15 @@ const userSignin = useSelector((state) => state.userSignin);
         }
       }
     }
-  }, [dispatch, order, orderId, sdkReady, successDeliver, successPay]);
-
-  const deliverHandler = () => {
-    dispatch(deliverOrder(order._id));
-  };
+  }, [dispatch, orderId, sdkReady, successPay, successDeliver, order]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
   };
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order._id));
+  };
+
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
@@ -80,7 +83,7 @@ const userSignin = useSelector((state) => state.userSignin);
           <ul>
             <li>
               <div className="card card-body">
-                <h2>Shipping</h2>
+                <h2>Shippring</h2>
                 <p>
                   <strong>Name:</strong> {order.shippingAddress.fullName} <br />
                   <strong>Address: </strong> {order.shippingAddress.address},

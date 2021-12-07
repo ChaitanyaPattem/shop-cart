@@ -75,6 +75,7 @@ export default function PlaceOrderScreen(props) {
                             {item.name}
                           </Link>
                         </div>
+
                         <div>
                           {item.qty} x ${item.price} = ${item.qty * item.price}
                         </div>
@@ -134,7 +135,7 @@ export default function PlaceOrderScreen(props) {
               {error && <MessageBox variant="danger">{error}</MessageBox>}
             </ul>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
   );
