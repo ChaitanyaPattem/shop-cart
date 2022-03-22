@@ -5,13 +5,9 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
-
-
-
 export default function OrderListScreen(props) {
-
+  const sellerMode = props.match.path.indexOf('/seller') >= 0;
   const orderList = useSelector((state) => state.orderList);
-
   const { loading, error, orders } = orderList;
   const orderDelete = useSelector((state) => state.orderDelete);
   const {
@@ -19,27 +15,28 @@ export default function OrderListScreen(props) {
     error: errorDelete,
     success: successDelete,
   } = orderDelete;
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const dispatch = useDispatch();
- useEffect(() => {
+  useEffect(() => {
     dispatch({ type: ORDER_DELETE_RESET });
-    dispatch(listOrders());
-  }, [dispatch, successDelete]);
+    dispatch(listOrders({ seller: sellerMode ? userInfo._id : '' }));
+  }, [dispatch, sellerMode, successDelete, userInfo._id]);
   const deleteHandler = (order) => {
     if (window.confirm('Are you sure to delete?')) {
       dispatch(deleteOrder(order._id));
     }
   };
-  
   return (
     <div>
       <h1>Orders</h1>
-       {loadingDelete && <LoadingBox></LoadingBox>}
+      {loadingDelete && <LoadingBox></LoadingBox>}
       {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
-        <MessageBox
-         variant="danger">{error}</MessageBox>
+        <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <table className="table">
           <thead>
@@ -79,7 +76,7 @@ export default function OrderListScreen(props) {
                   <button
                     type="button"
                     className="small"
-                    onclick={() => deleteHandler(order)}
+                    onClick={() => deleteHandler(order)}
                   >
                     Delete
                   </button>
