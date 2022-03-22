@@ -60,9 +60,9 @@ export default function ProductEditScreen(props) {
       })
     );
   };
+
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [errorUpload, setErrorUpload] = useState('');
-
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const uploadFileHandler = async (e) => {
@@ -84,7 +84,6 @@ export default function ProductEditScreen(props) {
       setLoadingUpload(false);
     }
   };
-
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>

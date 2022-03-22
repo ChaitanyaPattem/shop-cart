@@ -15,28 +15,29 @@ export default function RegisterScreen(props) {
     ? props.location.search.split('=')[1]
     : '/';
 
-  const userRegister = useSelector((state) => state.userRegister);
+    const userRegister = useSelector((state)=> state.userRegister);
   const { userInfo, loading, error } = userRegister;
 
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Password and confirm password are not match');
+    if(password !== confirmPassword){
+      alert('Password are not match')
     } else {
       dispatch(register(name, email, password));
     }
   };
-  useEffect(() => {
-    if (userInfo) {
-      props.history.push(redirect);
-    }
-  }, [props.history, redirect, userInfo]);
+
+  useEffect(()=>{
+      if(userInfo){
+          props.history.push(redirect);
+      }
+  }, [props.history, redirect, userInfo])
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>
         <div>
-          <h1>Create Account</h1>
+          <h1>Create an Account</h1>
         </div>
         {loading && <LoadingBox></LoadingBox>}
         {error && <MessageBox variant="danger">{error}</MessageBox>}
@@ -75,7 +76,7 @@ export default function RegisterScreen(props) {
           <input
             type="password"
             id="confirmPassword"
-            placeholder="Enter confirm password"
+            placeholder="Enter confirmPassword"
             required
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></input>
@@ -89,8 +90,7 @@ export default function RegisterScreen(props) {
         <div>
           <label />
           <div>
-            Already have an account?{' '}
-            <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
+            Already have an account?{' '} <Link to={`/signin?redirect=${redirect}`}>Sign In</Link>
           </div>
         </div>
       </form>
